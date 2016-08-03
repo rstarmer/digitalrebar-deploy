@@ -10,7 +10,7 @@ require 'fog'
 require 'diplomat'
 require './common'
 # openstack uses the python API via CLI commands
-require './openstack'  
+require './openstack'
 
 class Servers
   extend Jimson::Handler
@@ -158,7 +158,7 @@ class Servers
       when 'OpenStack'
         name = (fixed_args[:hostname] ? fixed_args[:hostname] : "rebar-cloudwrap-#{node_id}").split('.')[0]
         server = OpenStack::create(endpoint, name, keyfile_name(node_id), fixed_args[:image_id], fixed_args[:flavor_id])
-        log("Created server #{server.to_json}")        
+        log("Created server #{server.to_json}")
       when 'Packet'
         # Packet endpoint has the account key
         packet_project_token = endpoint['project_token']
@@ -166,8 +166,8 @@ class Servers
 
         date = Time.now.strftime("%H%M%S")
         node = {
-          "facility" => (fixed_args[:facility] ? fixed_args[:facility] : "ewr1"),
-          "plan" => (fixed_args[:plan] ? fixed_args[:plan] : "baremetal_1"),
+          "facility" => (endpoint['facility'] ? endpoint['facility'] : "ewr1"),
+          "plan" => (endpoint['plan'] ? endpoint['plan'] : "baremetal_1"),
           "operating_system" => (fixed_args[:os] ? fixed_args[:os] : "ubuntu_14_04"),
           "hostname" => (fixed_args[:hostname] ? fixed_args[:hostname] : "pw-#{date}")
         }
